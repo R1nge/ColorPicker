@@ -25,6 +25,7 @@ public partial class ColorPickerUIToolkit : VisualElement, IDisposable
     public float PointerSize = 32;
     public Action<Color> OnColorPicked;
 
+
     public void Init()
     {
         hierarchy.Clear();
@@ -39,6 +40,7 @@ public partial class ColorPickerUIToolkit : VisualElement, IDisposable
         var gradient = CreateGradient(_gradientArea);
 
         content.Add(_gradientArea);
+        _gradientArea.RegisterCallback<PointerMoveEvent>(PointerMoveEvent);
 
         _pointer = CreatePointer();
         gradient.Add(_pointer);
@@ -141,7 +143,6 @@ public partial class ColorPickerUIToolkit : VisualElement, IDisposable
     private void RegisterPointerCallbacks(VisualElement pointer)
     {
         pointer.RegisterCallback<PointerDownEvent>(PointerDown);
-        pointer.RegisterCallback<PointerMoveEvent>(PointerMoveEvent);
         pointer.RegisterCallback<PointerUpEvent>(PointerUp);
     }
 
@@ -223,6 +224,7 @@ public partial class ColorPickerUIToolkit : VisualElement, IDisposable
 
     private void PointerMoveEvent(PointerMoveEvent pointer)
     {
+        Debug.LogWarning($"Dragging: {_draggingPointer}");
         if (_draggingPointer)
         {
             var halfWidth = PointerSize / 2f;
